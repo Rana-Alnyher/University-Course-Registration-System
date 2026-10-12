@@ -1,0 +1,257 @@
+CREATE DATABASE IF NOT EXISTS student_db;
+USE student_db;
+
+-- USERS 
+
+CREATE TABLE users(
+
+    user_id INT PRIMARY KEY AUTO_INCREMENT,
+
+    username VARCHAR(50)
+    UNIQUE NOT NULL,
+
+    password VARCHAR(255)
+    NOT NULL,
+
+    full_name VARCHAR(100),
+
+    user_role VARCHAR(20)
+
+    CHECK(
+        user_role IN(
+            'ADMIN',
+            'STUDENT'
+        )
+    )
+
+);
+
+--  COURSES 
+
+CREATE TABLE courses(
+
+    course_id INT PRIMARY KEY
+    AUTO_INCREMENT,
+
+    course_code VARCHAR(20)
+    UNIQUE NOT NULL,
+
+    course_name VARCHAR(100)
+    NOT NULL,
+
+    instructor VARCHAR(100),
+
+    capacity INT,
+
+    enrolled INT DEFAULT 0,
+
+    schedule VARCHAR(50),
+
+    credits INT DEFAULT 3
+
+);
+
+--  REGISTRATIONS 
+
+CREATE TABLE registrations(
+
+    registration_id INT PRIMARY KEY
+    AUTO_INCREMENT,
+
+    student_id INT,
+
+    course_id INT,
+
+    UNIQUE(
+        student_id,
+        course_id
+    ),
+
+    FOREIGN KEY(student_id)
+    REFERENCES users(user_id)
+    ON DELETE CASCADE,
+
+    FOREIGN KEY(course_id)
+    REFERENCES courses(course_id)
+    ON DELETE CASCADE
+
+);
+
+--  PREREQUISITES 
+
+CREATE TABLE prerequisites(
+
+    course_id INT,
+
+    prereq_course_id INT,
+
+    PRIMARY KEY(
+        course_id,
+        prereq_course_id
+    )
+
+);
+
+--  ADMINS 
+
+INSERT INTO users(
+
+    username,
+    password,
+    full_name,
+    user_role
+
+)
+
+VALUES
+
+(
+'admin1',
+'f8638b979b2f4f793ddb6dbd197e0ee25a7a6ea32b0ae22f5e3c5d119d839e75',
+'Najd',
+'ADMIN'
+),
+
+(
+'admin2',
+'f8638b979b2f4f793ddb6dbd197e0ee25a7a6ea32b0ae22f5e3c5d119d839e75',
+'Sara',
+'ADMIN'
+),
+
+(
+'admin3',
+'f8638b979b2f4f793ddb6dbd197e0ee25a7a6ea32b0ae22f5e3c5d119d839e75',
+'Ali',
+'ADMIN'
+),
+
+(
+'admin4',
+'f8638b979b2f4f793ddb6dbd197e0ee25a7a6ea32b0ae22f5e3c5d119d839e75',
+'Mona',
+'ADMIN'
+),
+
+(
+'admin5',
+'f8638b979b2f4f793ddb6dbd197e0ee25a7a6ea32b0ae22f5e3c5d119d839e75',
+'Fahad',
+'ADMIN'
+);
+
+--  STUDENTS 
+
+INSERT INTO users(
+
+    username,
+    password,
+    full_name,
+    user_role
+
+)
+
+VALUES
+
+(
+'student1',
+'03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4',
+'Sarah',
+'STUDENT'
+),
+
+(
+'student2',
+'03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4',
+'Lana',
+'STUDENT'
+),
+
+(
+'student3',
+'03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4',
+'Nora',
+'STUDENT'
+),
+
+(
+'student4',
+'03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4',
+'Ahmed',
+'STUDENT'
+),
+
+(
+'student5',
+'03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4',
+'Khalid',
+'STUDENT'
+);
+
+--  COURSES 
+
+INSERT INTO courses(
+
+    course_code,
+    course_name,
+    instructor,
+    capacity,
+    schedule
+
+)
+
+VALUES
+
+(
+'CS101',
+'Intro Programming',
+'Dr Ahmed',
+30,
+'Sun 8:00'
+),
+
+(
+'CS201',
+'Data Structures',
+'Dr Khalid',
+25,
+'Tue 10:00'
+),
+
+(
+'CS301',
+'Database',
+'Dr Sara',
+20,
+'Tue 10:00'
+),
+
+(
+'CS401',
+'Software Engineering',
+'Dr Faisal',
+30,
+'Wed 1:00'
+),
+
+(
+'CS450',
+'Networks',
+'Dr Mona',
+20,
+'Thu 9:00'
+);
+
+--  PREREQUISITES 
+
+INSERT INTO prerequisites
+VALUES(
+2,
+1
+);
+
+INSERT INTO prerequisites
+VALUES(
+4,
+2
+);
